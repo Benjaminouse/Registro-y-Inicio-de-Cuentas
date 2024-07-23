@@ -2,50 +2,54 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <link rel="stylesheet" href="/open/style.css">
-    <title>Información del Usuario</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/Base/style.css">
+    <title>Inicio de Sesión</title>
 </head>
+
 <body>
-    <div class="block-user-info">
-       <div class="block-user-btn-exit">
-           <a class="btn-user-block" href="/Regerist/index.html">X</a>
-       </div>
-        <div class="block-intern-user-info">
-            <div class="block-int-user">
-                <h3 class="user-info-title">Información del Usuario</h3>
-                <table border="1">
-                    <thead>
-                        <tr>
-                            <th>Nombre</th>
-                            <th>Email</th>
-                            <th>Contraseña</th>
-                        </tr>
-                    </thead>
-                    <tbody id="userTableBody">
-                    </tbody>
-                </table>
+    <header class="header">
+        <div class="int-header">
+            <div class="group-header">
+                <h2 class="title-header">Inicio de Sesión</h2>
+                <form action="/Open/index.html">
+                    <div class="form-group">
+                        <label for="nameUser" class="title-name-user">Nombre de Usuario</label>
+                        <input type="text" id="nameUser" name="nameUser" class="name-user" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="emailUser" class="title-email-user">Correo Electrónico</label>
+                        <input type="email" id="emailUser" name="emailUser" class="email-user" placeholder="example@gmail.com" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="passwordUser" class="title-password-user">Contraseña</label>
+                        <input type="password" id="passwordUser" name="passwordUser" class="password-user" required>
+                    </div>
+                    <button type="submit" class="submit-button" onclick="loginUser()">Entrar</button>
+                </form>
+                <a href="/Regerist/index.html" class="link-registr">Registrarse sino tiene una cuenta</a>
             </div>
         </div>
-    </div>
+    </header>
     <script type="text/javascript">
-        document.addEventListener("DOMContentLoaded", function() {
-            let userData = JSON.parse(sessionStorage.getItem("userData"));
-            
-            if (userData) {
-                let tableBody = document.getElementById("userTableBody");
-                
-                let row = document.createElement("tr");
-                row.innerHTML = `
-                    <td>${userData.name}</td>
-                    <td>${userData.email}</td>
-                    <td>${userData.password}</td>
-                `;
-                
-                tableBody.appendChild(row);
+        function loginUser() {
+            let inputName = document.querySelector("#nameUser").value;
+            let inputEmail = document.querySelector("#emailUser").value;
+            let inputPassword = document.querySelector("#passwordUser").value;
+
+            let savedUserData = JSON.parse(localStorage.getItem("userData"));
+
+            if (savedUserData &&
+                savedUserData.name === inputName &&
+                savedUserData.email === inputEmail &&
+                savedUserData.password === inputPassword) {
+                alert("¡Se ha iniciado Sesión Correctamente!");
+                sessionStorage.setItem("userData", JSON.stringify(savedUserData));
+                window.location.href = "/open/index.html";
             } else {
-                alert("No se encontró información de usuario.");
+                alert("¡Nombre de usuario, correo electrónico o contraseña incorrectos!");
+                return;
             }
-        });
+        }
     </script>
-</body>
-</html>
+</body></html>
