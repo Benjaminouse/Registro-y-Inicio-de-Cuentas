@@ -2,60 +2,50 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="/Regerist/style.css">
-    <title>Registrarse</title>
+    <link rel="stylesheet" href="/open/style.css">
+    <title>Información del Usuario</title>
 </head>
 <body>
-    <header class="header">
-        <div class="int-header">
-            <div class="group-header">
-                <h2 class="title-header">Crear Cuenta</h2>
-                <form action="/Base/index.html">
-                    <div class="form-group">
-                        <label for="username" class="title-name-user">Nombre de Usuario</label>
-                        <input type="text" id="username" name="username" class="name-user" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="email" class="title-email-user">Correo Electrónico</label>
-                        <input type="email" id="email" name="email" class="email-user" placeholder="example@gmail.com" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="password" class="title-password-user">Contraseña</label>
-                        <input type="password" id="password" name="password" class="password-user" required>
-                    </div>
-                    <button type="submit" class="submit-button" onclick="saveRegister()">Registrarse</button>
-                </form>
-                <a href="/Base/index.html" class="link-registr">Ya tienes una cuenta</a>
+    <div class="block-user-info">
+       <div class="block-user-btn-exit">
+           <a class="btn-user-block" href="/Regerist/index.html">X</a>
+       </div>
+        <div class="block-intern-user-info">
+            <div class="block-int-user">
+                <h3 class="user-info-title">Información del Usuario</h3>
+                <table border="1">
+                    <thead>
+                        <tr>
+                            <th>Nombre</th>
+                            <th>Email</th>
+                            <th>Contraseña</th>
+                        </tr>
+                    </thead>
+                    <tbody id="userTableBody">
+                    </tbody>
+                </table>
             </div>
         </div>
-    </header>
+    </div>
     <script type="text/javascript">
-        function saveRegister() {
-            event.preventDefault();
-            let inputName = document.querySelector( ".name-user" ).value;
-            let inputEmail = document.querySelector( ".email-user" ).value;
-            let inputPassword = document.querySelector( ".password-user" ).value;
+        document.addEventListener("DOMContentLoaded", function() {
+            let userData = JSON.parse(sessionStorage.getItem("userData"));
             
-            let saveform = {
-                name: inputName,
-                email: inputEmail,
-                password: inputPassword
-            }
-            
-            if ( saveform ) {
-                localStorage.setItem("userData", JSON.stringify(saveform));
-                alert( "¡Usuario Registrado!" );
-                document.querySelector("#username").value = "";
-                document.querySelector("#email").value = "";
-                document.querySelector("#password").value = "";
+            if (userData) {
+                let tableBody = document.getElementById("userTableBody");
+                
+                let row = document.createElement("tr");
+                row.innerHTML = `
+                    <td>${userData.name}</td>
+                    <td>${userData.email}</td>
+                    <td>${userData.password}</td>
+                `;
+                
+                tableBody.appendChild(row);
             } else {
-                alert( "¡Error al registrarse!" );
-                return;
+                alert("No se encontró información de usuario.");
             }
-            
-            console.log( `Usuario - Registrado: \n name: ${saveform.name} \n email: ${saveform.email} \n password: ${saveform.password}` );
-        }
+        });
     </script>
 </body>
 </html>
